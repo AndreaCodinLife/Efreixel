@@ -90,4 +90,10 @@ LNODE *get_next_node(LIST * lst, LNODE * lnode);
 */
 void *get_previous_elem(LIST * lst, LNODE * lnode);
 
+/**
+ * @breif: Delete column by name
+ * @param1: Pointer to the CDataframe
+ * @param2: Column name
+ */
+void delete_column(CDATAFRAME *cdf, char *col_name);
 #endif

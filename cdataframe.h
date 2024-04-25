@@ -4,12 +4,6 @@
 #include "column.h"
 #include "list.h"
 
-// Define the CDATAFRAME structure
-typedef struct {
-    LIST *columns;
-    // Any other necessary fields
-} CDATAFRAME;
-
 // Function prototypes
 
 /**
@@ -21,26 +15,15 @@ typedef struct {
 CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size);
 
 /**
- * @brief Delete a CDataframe
- * @param cdf A pointer to the pointer of the CDataframe to be deleted
- */
+* @brief: Column deletion
+* param1: Pointer to the CDataframe to delete */
 void delete_cdataframe(CDATAFRAME **cdf);
 
 /**
- * @brief Delete a column from the CDataframe
- * @param cdf A pointer to the CDataframe
- * @param col_name The name of the column to be deleted
- */
-void delete_column(CDATAFRAME *cdf, char *col_name);
-
-/**
- * @brief Get the number of columns in the CDataframe
- * @param cdf A pointer to the CDataframe
- * @return The number of columns in the CDataframe
+ * @brief: Number of columns
+ * @param1: Point to the CDataframe
+ * @return: Number of columns in the CDataframe
  */
 int get_cdataframe_cols_size(CDATAFRAME *cdf);
 
-// Prototypes for other CDataframe functions
-// ...
-
-#endif // CDATAFRAME_H
+#endif

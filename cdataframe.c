@@ -8,32 +8,78 @@
 
 // Function to create a new CDataframe
 CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size) {
-    // Implement function to create a new CDataframe
-    // with the specified column types
-    // and initialize the doubly-linked list
+    CDATAFRAME *cdf = (CDATAFRAME *)malloc(sizeof(CDATAFRAME));
+    if (cdf == NULL) {
+        // Handle memory allocation failure
+        return NULL;
+    }
+    cdf->head = NULL;
+    cdf->tail = NULL;
+    for (int i = 0; i < size; i++) {
+        COLUMN *col = create_column(cdftype[i], "Column");
+        if (col == NULL) {
+            // Handle memory allocation failure
+            return NULL;
+        }
+        LNODE *lnode = (LNODE *)malloc(sizeof(LNODE));
+        if (lnode == NULL) {
+            // Handle memory allocation failure
+            return NULL;
+        }
+        lnode->data = col;
+        lnode->prev = NULL;
+        lnode->next = NULL;
+        if (cdf->head == NULL) {
+            cdf->head = lnode;
+            cdf->tail = lnode;
+        } else {
+            cdf->tail->next = lnode;
+            lnode->prev = cdf->tail;
+            cdf->tail = lnode;
+        }
+    }    
+    return cdf;
 }
 
-// Function to delete a CDataframe
 void delete_cdataframe(CDATAFRAME **cdf) {
-    // Implement function to delete the CDataframe
-    // by freeing all columns and the list itself
+    LNODE *current = (*cdf)->head;
+    while (current != NULL) {
+        LNODE *next = current->next;
+        free(current->data);
+        free(current);
+        current = next;
+    }
+    free(*cdf);
+    *cdf = NULL;
 }
-
-// Function to delete a column from the CDataframe
 void delete_column(CDATAFRAME *cdf, char *col_name) {
-    // Implement function to delete a column
-    // from the CDataframe by column name
+    LNODE *current = cdf->head;
+    while (current != NULL) {
+        if (strcmp(((COLUMN*)current->data)->title, col_name) == 0) {
+            free(current->data);
+            if (current->prev != NULL) {
+                current->prev->next = current->next;
+            } else {
+                cdf->head = current->next;
+            }
+            if (current->next != NULL) {
+                current->next->prev = current->prev;
+            } else {
+                cdf->tail = current->prev;
+            }
+            free(current);
+            break;
+        }
+        current = current->next;
+    }
 }
 
-// Function to get the number of columns in the CDataframe
 int get_cdataframe_cols_size(CDATAFRAME *cdf) {
-    // Implement function to count the number of columns
-    // in the CDataframe
+    int count = 0;
+    LNODE *current = cdf->head;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    return count;
 }
-
-// Other functions for filling, displaying, and
-// performing operations on the CDataframe
-// ...
-
-// Helper functions for manipulating the doubly-linked list
-// ...

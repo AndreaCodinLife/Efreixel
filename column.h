@@ -63,7 +63,7 @@ int insert_value(COLUMN *col, void *value);
  * @brief Free the memory allocated by a column
  * @param col A pointer to the pointer of the column to be deleted
  */
-void delete_column(COLUMN **col);
+void delete_column_h(COLUMN **col);
 
 /**
  * @brief: Convert a value into a string
@@ -88,4 +88,4 @@ int count_greater(COLUMN *col, void *value);
 int count_less(COLUMN *col, void *value);
 int count_equal(COLUMN *col, void *value);
 
-#endif // COLUMN_H
+#endif 

@@ -136,7 +136,7 @@ void convert_value(COLUMN *col, unsigned long long int i, char *str, int size)
 /**
  * @brief: Free the space allocated by a column * @param1: Pointer to the column
  */
-void delete_column(COLUMN **col)
+void delete_column_h(COLUMN **col)
 {
     free((*col)->title);
     free(&((*col)->size));
