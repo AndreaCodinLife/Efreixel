@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include "column.c"
-#include "column.h"
 #include "list.c"
-#include "list.h"
+#include "cdataframe.c"
 
 int main() {
     COLUMN* pt;

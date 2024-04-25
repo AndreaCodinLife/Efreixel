@@ -22,7 +22,7 @@ int insert_value(COLUMN *col, void *value)
     //fflush(stdout);
     if (col->size == col->max_size)
     {
-        col->data = (void **)realloc(col->data, (col->max_size + 1) * sizeof(void *));
+        col->data = realloc(col->data, (col->max_size + 1) * sizeof(void *));
         if (col->data == NULL)
         {
             return -1;
@@ -33,24 +33,24 @@ int insert_value(COLUMN *col, void *value)
     switch (col->column_type)
     {
     case INT:
-        col->data[col->size] = (int *)malloc(sizeof(int));
+        col->data[col->size] = (void *)malloc(sizeof(int));
         //assign value to the address of the data
         col->data[col->size] = value;
         break;
     case CHAR:
-        col->data[col->size] = (char *)malloc(sizeof(char));
+        col->data[col->size] = (void *)malloc(sizeof(char));
         col->data[col->size] = value;
         break;
     case FLOAT:
-        col->data[col->size] = (float *)malloc(sizeof(float));
+        col->data[col->size] = (void *)malloc(sizeof(float));
         col->data[col->size] = value;
         break;
     case DOUBLE:
-        col->data[col->size] = (double *)malloc(sizeof(double));
+        col->data[col->size] = (void *)malloc(sizeof(double));
         col->data[col->size] = value;
         break;
     case STRING:
-        col->data[col->size] = (char *)malloc(strlen((char *)value) + 1);
+        col->data[col->size] = (void *)malloc(strlen((char *)value) + 1);
         strcpy((char *)col->data[col->size], (char *)value);
         break;
     default:
