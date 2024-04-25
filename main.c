@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include "column.c"
 #include "list.c"
-#include "cdataframe.c"
 
-int main() {
-    COLUMN* pt;
-    pt = create_column(3, "test");
-    insert_value(pt, (void*)3);
-    display_col(pt);
+#define N 5
+
+int main()
+{
+    COLUMN *mycol = create_column(CHAR, "Column 1");
+    char a = 'A', c = 'C', d = 'D';
+    insert_value(mycol, &a);
+    insert_value(mycol, (void*) NULL);
+    insert_value(mycol, &c);
+    print_col(mycol);
     return 0;
 }

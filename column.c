@@ -1,4 +1,5 @@
 #include "column.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -19,7 +20,7 @@ COLUMN *create_column(ENUM_TYPE type, char *title)
 
 int insert_value(COLUMN *col, void *value)
 {
-    //fflush(stdout);
+    // fflush(stdout);
     if (col->size == col->max_size)
     {
         col->data = realloc(col->data, (col->max_size + 1) * sizeof(void *));
@@ -32,9 +33,14 @@ int insert_value(COLUMN *col, void *value)
 
     switch (col->column_type)
     {
+    case UINT:
+        col->data[col->size] = (void *)malloc(sizeof(unsigned int));
+        // assign value to the address of the data
+        col->data[col->size] = value;
+        break;
     case INT:
         col->data[col->size] = (void *)malloc(sizeof(int));
-        //assign value to the address of the data
+        // assign value to the address of the data
         col->data[col->size] = value;
         break;
     case CHAR:
@@ -53,37 +59,83 @@ int insert_value(COLUMN *col, void *value)
         col->data[col->size] = (void *)malloc(strlen((char *)value) + 1);
         strcpy((char *)col->data[col->size], (char *)value);
         break;
+    case STRUCTURE:
+        col->data[col->size] = (void *)malloc(sizeof(void *));
+        col->data[col->size] = value;
+        break;
     default:
+        col->data[col->size] = (void *)malloc(sizeof(void *));
+        col->data[col->size] = value;
         break;
     }
     col->size++;
     return 0;
 }
-
+/**
+ * @brief: Convert a value into a string
+ * @param1: Pointer to the column
+ * @param2: Position of the value in the data array
+ * @param3: The string in which the value will be written
+ * @param4: Maximum size of the string
+ */
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size)
 {
     switch (col->column_type)
     {
+    case UINT:
+        if (col->data[i] == NULL)
+            snprintf(str, size, "%s", "NULL");
+        else
+            snprintf(str, size, "%u", *((unsigned int *)col->data[i]));
+        break;
     case INT:
-        snprintf(str, size, "%d", *((int *)col->data[i]));
+        if (col->data[i] == NULL)
+            snprintf(str, size, "%s", "NULL");
+        else
+            snprintf(str, size, "%d", *((int *)col->data[i]));
         break;
     case CHAR:
-        snprintf(str, size, "%c", *((char *)col->data[i]));
+        if (col->data[i] == NULL)
+            snprintf(str, size, "%s", "NULL");
+        else
+            snprintf(str, size, "%c", *((char *)col->data[i]));
         break;
     case FLOAT:
-        snprintf(str, size, "%f", *((float *)col->data[i]));
+        if (col->data[i] == NULL)
+            snprintf(str, size, "%s", "NULL");
+        else
+            snprintf(str, size, "%f", *((float *)col->data[i]));
         break;
     case DOUBLE:
-        snprintf(str, size, "%lf", *((double *)col->data[i]));
+        if (col->data[i] == NULL)
+            snprintf(str, size, "%s", "NULL");
+        else
+            snprintf(str, size, "%lf", *((double *)col->data[i]));
         break;
     case STRING:
-        snprintf(str, size, "%s", (char *)col->data[i]);
+        if (col->data[i] == NULL)
+            snprintf(str, size, "%s", "NULL");
+        else
+            snprintf(str, size, "%s", (char *)col->data[i]);
+        break;
+    case STRUCTURE:
+        if (col->data[i] == NULL)
+            snprintf(str, size, "%s", "NULL");
+        else
+            snprintf(str, size, "%p", col->data[i]);
         break;
     default:
+        if (col->data[i] == NULL)
+            snprintf(str, size, "%s", "NULL");
+        else
+            snprintf(str, size, "%p", col->data[i]);
         break;
     }
 }
 
+/**
+ * @brief: Free the space allocated by a column * @param1: Pointer to the column
+ */
 void delete_column(COLUMN **col)
 {
     free((*col)->title);
@@ -94,12 +146,165 @@ void delete_column(COLUMN **col)
     free(col);
 }
 
-void display_col(COLUMN *col)
+/**
+ * @brief: Display the content of a column
+ * @param: Pointer to the column to display
+ Print the content of the column
+[0] A
+[1] NULL
+[2] C
+ */
+void print_col(COLUMN *col)
 {
-    printf("----------\nName : %s\nSize : %d\nMax size : %d\n----------\n", col->title, col->size, col->max_size);
+    char str[100];
+    for (unsigned long long int i = 0; i < col->size; i++)
+    {
+        convert_value(col, i, str, 100);
+        printf("[%llu] %s\n", i, str);
+    }
 }
 
-/*l'expression doit avoir un type pointeur vers struct ou union mais elle a le type "COLUMN **" (aka "struct column **")
-  l'expression doit avoir un type pointeur vers struct ou union mais elle a le type "COLUMN **" (aka "struct column **")
-  l'expression doit avoir un type pointeur vers struct ou union mais elle a le type "COLUMN **" (aka "struct column **")
-  */
+int count_occurrences(COLUMN *col, void *value)
+{
+    int count = 0;
+    for (unsigned long long int i = 0; i < col->size; i++)
+    {
+        if (col->column_type == UINT && *((unsigned int *)col->data[i]) == *((unsigned int *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == INT && *((int *)col->data[i]) == *((int *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == CHAR && *((char *)col->data[i]) == *((char *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == FLOAT && *((float *)col->data[i]) == *((float *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == DOUBLE && *((double *)col->data[i]) == *((double *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == STRING && strcmp((char *)col->data[i], (char *)value) == 0)
+        {
+            count++;
+        }
+        else if (col->column_type == STRUCTURE && col->data[i] == value)
+        {
+            count++;
+        }
+        else 
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+void *get_value(COLUMN *col, unsigned long long int i)
+{
+    return col->data[i];
+}
+
+int count_greater(COLUMN *col, void *value)
+{
+    int count = 0;
+    for (unsigned long long int i = 0; i < col->size; i++)
+    {
+        if (col->column_type == UINT && *((unsigned int *)col->data[i]) > *((unsigned int *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == INT && *((int *)col->data[i]) > *((int *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == CHAR && *((char *)col->data[i]) > *((char *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == FLOAT && *((float *)col->data[i]) > *((float *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == DOUBLE && *((double *)col->data[i]) > *((double *)value))
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+int count_less(COLUMN *col, void *value)
+{
+    int count = 0;
+    for (unsigned long long int i = 0; i < col->size; i++)
+    {
+        if (col->column_type == UINT && *((unsigned int *)col->data[i]) < *((unsigned int *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == INT && *((int *)col->data[i]) < *((int *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == CHAR && *((char *)col->data[i]) < *((char *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == FLOAT && *((float *)col->data[i]) < *((float *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == DOUBLE && *((double *)col->data[i]) < *((double *)value))
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+int count_equal(COLUMN *col, void *value)
+{
+    int count = 0;
+    for (unsigned long long int i = 0; i < col->size; i++)
+    {
+        if (col->column_type == UINT && *((unsigned int *)col->data[i]) == *((unsigned int *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == INT && *((int *)col->data[i]) == *((int *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == CHAR && *((char *)col->data[i]) == *((char *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == FLOAT && *((float *)col->data[i]) == *((float *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == DOUBLE && *((double *)col->data[i]) == *((double *)value))
+        {
+            count++;
+        }
+        else if (col->column_type == STRING && strcmp((char *)col->data[i], (char *)value) == 0)
+        {
+            count++;
+        }
+        else if (col->column_type == STRUCTURE && col->data[i] == value)
+        {
+            count++;
+        }
+        else
+        {
+            count++;
+        }
+    }
+    return count;
+}
