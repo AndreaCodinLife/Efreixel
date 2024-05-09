@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 COLUMN *create_column(ENUM_TYPE type, char *title)
 {
     COLUMN *column = (COLUMN *)malloc(sizeof(COLUMN));
@@ -71,13 +72,7 @@ int insert_value(COLUMN *col, void *value)
     col->size++;
     return 0;
 }
-/**
- * @brief: Convert a value into a string
- * @param1: Pointer to the column
- * @param2: Position of the value in the data array
- * @param3: The string in which the value will be written
- * @param4: Maximum size of the string
- */
+
 void convert_value(COLUMN *col, unsigned long long int i, char *str, int size)
 {
     switch (col->column_type)
@@ -133,9 +128,6 @@ void convert_value(COLUMN *col, unsigned long long int i, char *str, int size)
     }
 }
 
-/**
- * @brief: Free the space allocated by a column * @param1: Pointer to the column
- */
 void delete_column_h(COLUMN **col)
 {
     free((*col)->title);
@@ -146,14 +138,6 @@ void delete_column_h(COLUMN **col)
     free(col);
 }
 
-/**
- * @brief: Display the content of a column
- * @param: Pointer to the column to display
- Print the content of the column
-[0] A
-[1] NULL
-[2] C
- */
 void print_col(COLUMN *col)
 {
     char str[100];
