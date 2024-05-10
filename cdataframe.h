@@ -110,4 +110,6 @@ void replace_value(CDATAFRAME* cdf, int rowNb, int colNb, void* value);
  */
 void display_column_names(CDATAFRAME* cdf);
 
+void display_cdataframe_like_excel(CDATAFRAME* cdf);
+
 #endif

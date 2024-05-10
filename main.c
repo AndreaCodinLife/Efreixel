@@ -17,23 +17,28 @@ int main()
     printf("CDataframe created successfully\n");
 
     fill_cdataframe_with_inputs(cdf);
-    display_cdataframe(cdf);
-    //delete_row(cdf, 1);
     //display_cdataframe(cdf);
+    // delete_row(cdf, 1);
+    // display_cdataframe(cdf);
     int value = 2;
-    void* val = &value;
-    if (is_in_cdataframe(cdf, val, INT)) {
+    void *val = &value;
+    if (is_in_cdataframe(cdf, val, INT))
+    {
         printf("The value %d is in the dataframe.\n", value);
-    } else {
+    }
+    else
+    {
         printf("The Value %d is not in the dataframe.\n", value);
     }
 
     value = 6;
     val = &value;
-    replace_value(cdf, 2, 1, val);
+    //replace_value(cdf, 2, 1, val);
     display_cdataframe(cdf);
-
-    display_column_names(cdf);
+    printf("Test display_cdataframe_like_excel\n");
+    display_cdataframe_like_excel(cdf);
+    printf("Test end\n");
+    //display_column_names(cdf);
 
     delete_cdataframe(&cdf);
     if (cdf != NULL)
