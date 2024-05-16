@@ -39,7 +39,9 @@ struct column
     unsigned int size;     // logical size
     unsigned int max_size; // physical size
     ENUM_TYPE column_type;
-    COL_TYPE **data; // array of pointers to stored data unsigned long long int *index; // array of integers
+    COL_TYPE **data; // array of pointers to stored data 
+    unsigned long long int *index; // array of integers
+
 };
 typedef struct column COLUMN;
 

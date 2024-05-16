@@ -19,7 +19,11 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size)
     cdf->tail = NULL;
     for (int i = 0; i < size; i++)
     {
-        COLUMN *col = create_column(cdftype[i], "Column");
+        // ask the user for the name of the column
+        char col_name[100];
+        printf("Enter the name of the column %d: ", i + 1);
+        scanf("%s", col_name);
+        COLUMN *col = create_column(cdftype[i], col_name);
         if (col == NULL)
         {
             // Handle memory allocation failure
@@ -253,6 +257,43 @@ void display_cdataframe_like_excel(CDATAFRAME *cdf)
             }
         }
     }
+    // print the top line of the matrix with the column names
+    LNODE *nodec = cdf->head;
+    int j = 0;
+    while (nodec != NULL)
+    {
+        int len = strlen(((COLUMN *)nodec->data)->title);
+        int diff = longest_values[j] - len;
+        //if column name is longer than the value in the column then change the longest value to the length of the column name
+        if (diff < 0)
+        {
+            longest_values[j] = len;
+        }
+        int left = diff / 2;
+        int right = diff - left;
+        printf("|");
+        for (int k = 0; k < left; k++)
+        {
+            printf(" ");
+        }
+        printf("%s", ((COLUMN *)nodec->data)->title);
+        nodec = nodec->next;
+        for (int k = 0; k < right; k++)
+        {
+            printf(" ");
+        }
+        j++;
+    }
+    printf("|\n");
+    //add a line ----------------
+    for (int j = 0; j < nb_cols; j++)
+    {
+        for (int k = 0; k < longest_values[j]; k++)
+        {
+            printf("-");
+        }
+    }
+    printf("\n");
 
     // print the matrix
     for (int i = 0; i < nb_rows; i++)
@@ -414,9 +455,111 @@ void display_column_names(CDATAFRAME *cdf)
     LNODE *node = cdf->head;
     while (node != NULL)
     {
-        COLUMN *col = node->data;
-        printf("%s ", col->title);
+        printf("|%s", ((COLUMN *)node->data)->title);
         node = node->next;
     }
-    printf("/n");
+    printf("|\n");
+}
+
+// function to create a cdframe randomly
+void create_cdataframe_randomly(CDATAFRAME *cdf, int nb_rows, int nb_cols)
+{
+    LNODE *node = cdf->head;
+    for (int i = 0; i < nb_cols && node != NULL; i++)
+    {
+        COLUMN *col = node->data;
+        for (int j = 0; j < nb_rows; j++)
+        {
+            void *value = (void *)malloc(sizeof(col->column_type));
+            switch (col->column_type)
+            {
+            case UINT:
+                *(unsigned int *)value = rand() % 100;
+                break;
+            case INT:
+                *(int *)value = rand() % 10000000;
+                break;
+            case CHAR:
+                *(char *)value = 'a' + rand() % 26;
+                break;
+            case FLOAT:
+                *(float *)value = (float)(rand() % 100) / 10;
+                break;
+            case DOUBLE:
+                *(double *)value = (double)(rand() % 100) / 10;
+                break;
+            case STRING:
+                break;
+            case STRUCTURE:
+                break;
+            default:
+                value = NULL;
+                break;
+            }
+            insert_value(col, value);
+        }
+        node = node->next;
+    }
+}
+
+/**
+* @brief: Create a CDataframe from csvfile 
+* @param1: CSV filename 
+* @param2: Array of types 
+* @param3: Size of array in param2 
+*/
+CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
+    // Open the CSV file
+    FILE *file = fopen(file_name, "r");
+    if (file == NULL) {
+        return NULL;
+    }
+    
+    // Create a new CDATAFRAME
+    CDATAFRAME *cdf = create_cdataframe(dftype, size);
+    if (cdf == NULL) {
+        return NULL;
+    }
+    // Read each line from the CSV file and add it to the CDATAFRAME with the values in the appropriate column
+    char line[1024];
+    while (fgets(line, 1024, file)) {
+        char *token = strtok(line, ",");
+        int i = 0;
+        LNODE *node = cdf->head;
+        while (token != NULL && node != NULL) {
+            COLUMN *col = node->data;
+            void *value = (void *)malloc(sizeof(col->column_type));
+            switch (col->column_type) {
+                case UINT:
+                    sscanf(token, "%u", (unsigned int *)value);
+                    break;
+                case INT:
+                    sscanf(token, "%d", (int *)value);
+                    break;
+                case CHAR:
+                    sscanf(token, "%c", (char *)value);
+                    break;
+                case FLOAT:
+                    sscanf(token, "%f", (float *)value);
+                    break;
+                case DOUBLE:
+                    sscanf(token, "%lf", (double *)value);
+                    break;
+                case STRING:
+                    strcpy((char *)value, token);
+                    break;
+                case STRUCTURE:
+                    break;
+                default:
+                    value = NULL;
+                    break;
+            }
+            insert_value(col, value);
+            token = strtok(NULL, ",");
+            node = node->next;
+            i++;
+        }
+    }
+    fclose(file);
+    return cdf;
 }

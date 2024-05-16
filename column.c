@@ -12,10 +12,12 @@ COLUMN *create_column(ENUM_TYPE type, char *title)
         return NULL;
     }
     column->column_type = type;
-    column->title = title;
+    column->title = (char *)malloc(strlen(title) + 1);
+    strcpy(column->title, title);
     column->data = NULL;
     column->size = 0;
     column->max_size = 0;
+    column->index = NULL;
     return column;
 }
 

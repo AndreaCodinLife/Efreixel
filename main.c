@@ -7,7 +7,7 @@
 
 int main()
 {
-    ENUM_TYPE cdftype[] = {INT, INT, INT};
+    /*ENUM_TYPE cdftype[] = {INT, INT, INT};
     CDATAFRAME *cdf = create_cdataframe(cdftype, 3);
     if (cdf == NULL)
     {
@@ -16,10 +16,11 @@ int main()
     }
     printf("CDataframe created successfully\n");
 
-    fill_cdataframe_with_inputs(cdf);
-    //display_cdataframe(cdf);
-    // delete_row(cdf, 1);
+    // fill_cdataframe_with_inputs(cdf);
+    create_cdataframe_randomly(cdf, 10, 3);
     // display_cdataframe(cdf);
+    //  delete_row(cdf, 1);
+    //  display_cdataframe(cdf);
     int value = 2;
     void *val = &value;
     if (is_in_cdataframe(cdf, val, INT))
@@ -33,12 +34,15 @@ int main()
 
     value = 6;
     val = &value;
-    //replace_value(cdf, 2, 1, val);
+    // replace_value(cdf, 2, 1, val);
     display_cdataframe(cdf);
-    printf("Test display_cdataframe_like_excel\n");
+    printf("Test display_cdataframe_like_excel\n");*/
+    ENUM_TYPE cdftype[] = {INT, STRING, FLOAT}; // Array
+    //array of column types
+    CDATAFRAME* cdf = load_from_csv("test.csv", cdftype, 3);
     display_cdataframe_like_excel(cdf);
     printf("Test end\n");
-    //display_column_names(cdf);
+    // display_column_names(cdf);
 
     delete_cdataframe(&cdf);
     if (cdf != NULL)

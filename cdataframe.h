@@ -112,4 +112,12 @@ void display_column_names(CDATAFRAME* cdf);
 
 void display_cdataframe_like_excel(CDATAFRAME* cdf);
 
+/**
+* @brief: Create a CDataframe from csvfile 
+* @param1: CSV filename 
+* @param2: Array of types 
+* @param3: Size of array in param2 
+*/
+CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size);
+
 #endif
