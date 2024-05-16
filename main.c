@@ -7,7 +7,7 @@
 
 int main()
 {
-    ENUM_TYPE cdftype[] = {INT, INT, INT};
+    ENUM_TYPE cdftype[] = {INT, CHAR, INT};
     CDATAFRAME *cdf = create_cdataframe(cdftype, 3);
     if (cdf == NULL)
     {
@@ -16,7 +16,20 @@ int main()
     }
     printf("CDataframe created successfully\n");
 
-    fill_cdataframe_with_inputs(cdf);
+    fill_cdataframe(cdf);
+    display_cdataframe(cdf);
+    add_row(cdf);
+    display_cdataframe(cdf);
+    display_number_rows(cdf);
+    display_number_col(cdf);
+
+    int value = 1;
+    void* val = &value;
+    display_number_cells_equal(cdf, val, INT);
+    display_number_cells_smaller(cdf, val, INT);
+    display_number_cells_greater(cdf, val, INT);
+
+    /*fill_cdataframe_with_inputs(cdf);
     display_cdataframe(cdf);
     //delete_row(cdf, 1);
     //display_cdataframe(cdf);
@@ -33,7 +46,7 @@ int main()
     replace_value(cdf, 2, 1, val);
     display_cdataframe(cdf);
 
-    display_column_names(cdf);
+    display_column_names(cdf);*/
 
     delete_cdataframe(&cdf);
     if (cdf != NULL)

@@ -85,6 +85,52 @@ int get_cdataframe_cols_size(CDATAFRAME *cdf) {
     return count;
 }
 
+void fill_cdataframe(CDATAFRAME* cdf) {
+    if (!(cdf == NULL || cdf->head == NULL)) {
+        LNODE* node = cdf->head;
+        int size;
+        do {
+            printf("How many values do you want to store in this column ?\nnb values: ");
+            scanf("%d", &size);
+        } while (size < 1);
+        while (node != NULL) {// cdf->tail
+            COLUMN* column = node->data;
+            for (int i = 0; i < size; i++) {       
+                void* value = (void*) malloc(sizeof(column->column_type));
+                
+                switch (column->column_type)
+                    {
+                    case UINT:
+                        *(unsigned int *)value = rand() % 100;
+                        break;
+                    case INT:
+                        *(int *)value = rand() % 10000000;
+                        break;
+                    case CHAR:
+                        *(char *)value = 'a' + rand() % 26;
+                        break;
+                    case FLOAT:
+                        *(float *)value = (float)(rand() % 100) / 10;
+                        break;
+                    case DOUBLE:
+                        *(double *)value = (double)(rand() % 100) / 10;
+                        break;
+                    case STRING:
+                        break;
+                    case STRUCTURE:
+                        break;
+                    default:
+                        value = NULL;
+                        break;
+                    }
+                insert_value(node->data, value);
+            }
+            node = node->next;
+        }
+    }
+
+}
+
 void fill_cdataframe_with_inputs(CDATAFRAME* cdf) {
     if (!(cdf == NULL || cdf->head == NULL)) {
         LNODE* node = cdf->head;
@@ -165,6 +211,48 @@ void display_cdataframe_with_col_limit(CDATAFRAME* cdf, int nb_col) {
         col->size = size;
         node = node->next;
         printf("\n");
+    }
+}
+
+void add_row(CDATAFRAME* cdf) {
+    LNODE* node = cdf->head;
+    while (node != NULL) {
+        COLUMN* column = node->data;
+        void* value = (void*) malloc(sizeof(column->column_type));
+        switch (column->column_type)
+            {
+            case UINT:
+                printf("Enter a number:");
+                scanf("%u", (unsigned int*)value);
+                break;
+            case INT:
+                printf("Enter a number:");
+                scanf("%d", (int*)value);
+                break;
+            case CHAR:
+                printf("Enter a character:");
+                scanf(" %c", (char*)value);
+                break;
+            case FLOAT:
+                printf("Enter a floating number:");
+                scanf("%f", (float*)value);
+                break;
+            case DOUBLE:
+                printf("Enter a floating number:");
+                scanf("%lf", (double*)value);
+                break;
+            case STRING:
+                printf("Enter a word:");
+                scanf("%s", (char*)value);
+                break;
+            case STRUCTURE:
+                break;
+            default:
+                value = NULL;
+                break;
+        }
+        insert_value(node->data, value);
+        node = node->next;
     }
 }
 
@@ -252,4 +340,75 @@ void display_column_names(CDATAFRAME* cdf) {
         node = node->next;
     }
     printf("/n");
+}
+
+void display_number_rows(CDATAFRAME* cdf) {
+    LNODE* node = cdf->head;
+    int count = 0;
+    while (node != NULL) {
+        count++;
+        node = node->next;
+    }
+    printf("There are %d rows in this CDataframe\n", count);
+}
+
+void display_number_col(CDATAFRAME* cdf) {
+    LNODE* node = cdf->head;
+    COLUMN* column = node->data;
+    int count = column->size;
+    printf("There are %d columns in this CDataframe\n", count);
+}
+
+void display_number_cells_equal(CDATAFRAME* cdf, void* x, ENUM_TYPE type) {
+    LNODE* node = cdf->head;
+    int count = 0;
+    while(node != NULL) {
+        COLUMN* column = node->data;
+        if (column->column_type == type) {
+            for(int i = 0; i < column->size; i++) {
+                int* pt = column->data[i];
+                if (*pt == *(int*)x) {
+                    count++;
+                }
+            }
+        }
+        node = node->next;
+    }
+    printf("There are %d cells equal to the value given\n", count);
+}
+
+void display_number_cells_smaller(CDATAFRAME* cdf, void* x, ENUM_TYPE type) {
+    LNODE* node = cdf->head;
+    int count = 0;
+    while(node != NULL) {
+        COLUMN* column = node->data;
+        if (column->column_type == type) {
+            for(int i = 0; i < column->size; i++) {
+                int* pt = column->data[i];
+                if (*pt < *(int*)x) {
+                    count++;
+                }
+            }
+        }
+        node = node->next;
+    }
+    printf("There are %d cells smaller than the value given\n", count);
+}
+
+void display_number_cells_greater(CDATAFRAME* cdf, void* x, ENUM_TYPE type) {
+    LNODE* node = cdf->head;
+    int count = 0;
+    while(node != NULL) {
+        COLUMN* column = node->data;
+        if (column->column_type == type) {
+            for(int i = 0; i < column->size; i++) {
+                int* pt = column->data[i];
+                if (*pt > *(int*)x) {
+                    count++;
+                }
+            }
+        }
+        node = node->next;
+    }
+    printf("There are %d cells greater than the value given\n", count);
 }
