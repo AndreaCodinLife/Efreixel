@@ -13,7 +13,7 @@
  * @param size The number of columns in the CDataframe
  * @return A pointer to the created CDataframe
  */
-CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size);
+CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size, char **col_names);
 
 /**
 * @brief Delete a CDataframe
@@ -119,5 +119,13 @@ void display_cdataframe_like_excel(CDATAFRAME* cdf);
 * @param3: Size of array in param2 
 */
 CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size);
+
+/**
+* @brief: Export into a csvfile 
+* @param1: Pointer to the CDataframe 
+* @param2: csv filename where export file, if the file exists, 
+* it will be overwritten 
+*/
+void save_into_csv(CDATAFRAME *cdf, char *file_name);
 
 #endif

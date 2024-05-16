@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size)
+CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size, char** col_names)
 {
     CDATAFRAME *cdf = (CDATAFRAME *)malloc(sizeof(CDATAFRAME));
     if (cdf == NULL)
@@ -19,10 +19,17 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size)
     cdf->tail = NULL;
     for (int i = 0; i < size; i++)
     {
-        // ask the user for the name of the column
+        // ask the user for the name of the column if col_names is not provided
         char col_name[100];
-        printf("Enter the name of the column %d: ", i + 1);
-        scanf("%s", col_name);
+        if (col_names != NULL)
+        {
+            strcpy(col_name, col_names[i]);
+        }
+        else
+        {
+            printf("Enter the name of the column %d: ", i + 1);
+            scanf("%s", col_name);
+        }
         COLUMN *col = create_column(cdftype[i], col_name);
         if (col == NULL)
         {
@@ -52,7 +59,6 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size)
     }
     return cdf;
 }
-
 void delete_cdataframe(CDATAFRAME **cdf)
 {
     LNODE *current = (*cdf)->head;
@@ -504,9 +510,10 @@ void create_cdataframe_randomly(CDATAFRAME *cdf, int nb_rows, int nb_cols)
 
 /**
 * @brief: Create a CDataframe from csvfile 
-* @param1: CSV filename 
-* @param2: Array of types 
-* @param3: Size of array in param2 
+* @param: CSV filename 
+* @param: Array of types 
+* @param: Size of array in param2
+the first line of the CSV file must contain the column names (will be used as the title of the columns in the CDATAFRAME)
 */
 CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     // Open the CSV file
@@ -514,9 +521,21 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     if (file == NULL) {
         return NULL;
     }
-    
+    //get the first line of the file to get the column names
+    char line1[1024];
+    fgets(line1, 1024, file);
+    char *token1 = strtok(line1, ",");
+    // Create the array of column names
+    char *col_names[size];
+    int i = 0;
+    while (token1 != NULL) {
+        col_names[i] = (char *)malloc(strlen(token1) * sizeof(char));
+        strcpy(col_names[i], token1);
+        token1 = strtok(NULL, ",");
+        i++;
+    }
     // Create a new CDATAFRAME
-    CDATAFRAME *cdf = create_cdataframe(dftype, size);
+    CDATAFRAME *cdf = create_cdataframe(dftype, size, col_names);
     if (cdf == NULL) {
         return NULL;
     }
@@ -563,3 +582,80 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     fclose(file);
     return cdf;
 }
+
+/**
+* @brief: Export into a csvfile 
+* @param1: Pointer to the CDataframe 
+* @param2: csv filename where export file, if the file exists, 
+* it will be overwritten 
+*/
+void save_into_csv(CDATAFRAME *cdf, char *file_name) {
+    // Open the CSV file
+    FILE *file = fopen(file_name, "w");
+    if (file == NULL) {
+        return;
+    }
+    // Write the column names to the CSV file
+    LNODE *node = cdf->head;
+    while (node != NULL) {
+        COLUMN *col = node->data;
+        fprintf(file, "%s,", col->title);
+        node = node->next;
+    }
+    fprintf(file, "\n");
+    // Write the values to the CSV file
+    int nb_rows = 0;
+    node = cdf->head;
+    while (node != NULL) {
+        COLUMN *col = node->data;
+        if (col->size > nb_rows) {
+            nb_rows = col->size;
+        }
+        node = node->next;
+    }
+    for (int i = 0; i < nb_rows; i++) {
+        node = cdf->head;
+        while (node != NULL) {
+            COLUMN *col = node->data;
+            if (i < col->size) {
+                switch (col->column_type) {
+                    case UINT:
+                        fprintf(file, "%u,", *(unsigned int *)col->data[i]);
+                        break;
+                    case INT:
+                        fprintf(file, "%d,", *(int *)col->data[i]);
+                        break;
+                    case CHAR:
+                        fprintf(file, "%c,", *(char *)col->data[i]);
+                        break;
+                    case FLOAT:
+                        fprintf(file, "%f,", *(float *)col->data[i]);
+                        break;
+                    case DOUBLE:
+                        fprintf(file, "%lf,", *(double *)col->data[i]);
+                        break;
+                    case STRING:
+                        fprintf(file, "%s,", (char *)col->data[i]);
+                        break;
+                    case STRUCTURE:
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                fprintf(file, ",");
+            }
+            node = node->next;
+        }
+        fprintf(file, "\n");
+    }
+    fclose(file);
+}
+
+
+
+
+
+
+
+
