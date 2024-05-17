@@ -36,6 +36,12 @@ void delete_column(CDATAFRAME *cdf, char *col_name);
 int get_cdataframe_cols_size(CDATAFRAME *cdf);
 
 /**
+ * @brief fill a CDataframe with random values
+ * @param cdf Point to the CDataframe
+ */
+void fill_cdataframe(CDATAFRAME* cdf);
+
+/**
  * @brief fill a CDataframe with user input
  * @param cdf Point to the CDataframe
  */
@@ -46,6 +52,12 @@ void fill_cdataframe_with_inputs(CDATAFRAME* cdf);
  * @param cdf Point to the CDataframe
  */
 void display_cdataframe(CDATAFRAME* cdf);
+
+/**
+ * @brief Display the entire CDataframe like an excel file
+ * @param cdf Point to the CDataframe
+ */
+void display_cdataframe_like_excel(CDATAFRAME *cdf);
 
 /**
  * @brief Display a number of rows from the CDataframe
@@ -60,6 +72,12 @@ void display_cdataframe_with_rows_limit(CDATAFRAME* cdf, int nb_rows);
  * @param nb_col The number of columns to diplay
  */
 void display_cdataframe_with_col_limit(CDATAFRAME* cdf, int nb_col);
+
+/**
+ * @brief Add a row to the CDataframe
+ * @param cdf Point to the CDataframe
+ */
+void add_row(CDATAFRAME* cdf);
 
 /**
  * @brief Delete a row from the CDataframe
@@ -110,20 +128,31 @@ void replace_value(CDATAFRAME* cdf, int rowNb, int colNb, void* value);
  */
 void display_column_names(CDATAFRAME* cdf);
 
+void display_number_rows(CDATAFRAME* cdf);
+
 void display_cdataframe_like_excel(CDATAFRAME* cdf);
+
+void display_number_col(CDATAFRAME* cdf);
+
+void display_number_cells_equal(CDATAFRAME* cdf, void* x, ENUM_TYPE type);
+
+void display_number_cells_smaller(CDATAFRAME* cdf, void* x, ENUM_TYPE type);
+
+
+void display_number_cells_greater(CDATAFRAME* cdf, void* x, ENUM_TYPE type);
 
 /**
 * @brief: Create a CDataframe from csvfile 
-* @param1: CSV filename 
-* @param2: Array of types 
-* @param3: Size of array in param2 
+* @param file_name: CSV filename 
+* @param dftype: Array of types 
+* @param size: Size of array in param2 
 */
 CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size);
 
 /**
 * @brief: Export into a csvfile 
-* @param1: Pointer to the CDataframe 
-* @param2: csv filename where export file, if the file exists, 
+* @param cdf: Pointer to the CDataframe 
+* @param file_name: csv filename where export file, if the file exists, 
 * it will be overwritten 
 */
 void save_into_csv(CDATAFRAME *cdf, char *file_name);

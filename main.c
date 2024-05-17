@@ -8,18 +8,18 @@
 int main()
 {
     ENUM_TYPE cdftype[] = {INT, CHAR, INT};
-    CDATAFRAME *cdf = create_cdataframe(cdftype, 3);
+    /*CDATAFRAME *cdf = create_cdataframe(cdftype, 3, NULL);
     if (cdf == NULL)
     {
         printf("Error creating CDataframe\n");
         return -1;
     }
-    printf("CDataframe created successfully\n");
+    printf("CDataframe created successfully\n");*/
 
-    fill_cdataframe(cdf);
-    display_cdataframe(cdf);
+    CDATAFRAME* cdf = load_from_csv("export.csv", cdftype, 3);
+    display_cdataframe_like_excel(cdf);
     add_row(cdf);
-    display_cdataframe(cdf);
+    display_cdataframe_like_excel(cdf);
     display_number_rows(cdf);
     display_number_col(cdf);
 

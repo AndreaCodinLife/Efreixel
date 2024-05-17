@@ -1,12 +1,8 @@
 {
-  "files.associations": {
-    "__bit_reference": "c",
-    "__split_buffer": "c",
-    "vector": "c",
-    "string": "c",
-    "stdbool.h": "c"
-  },
-  "files.exclude": {
-    "main": true
-  }
+    "files.associations": {
+        "__bit_reference": "c",
+        "__split_buffer": "c",
+        "vector": "c",
+        "string": "c"
+    }
 }

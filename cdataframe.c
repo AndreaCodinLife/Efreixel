@@ -59,6 +59,7 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size, char** col_names)
     }
     return cdf;
 }
+
 void delete_cdataframe(CDATAFRAME **cdf)
 {
     LNODE *current = (*cdf)->head;
@@ -227,7 +228,6 @@ void display_cdataframe(CDATAFRAME *cdf)
     printf("-----------\n");
 }
 
-// display cdataframe like excel with cells denoted by boxes and rows and columns
 void display_cdataframe_like_excel(CDATAFRAME *cdf)
 {
 
@@ -540,8 +540,7 @@ void replace_value(CDATAFRAME *cdf, int rowNb, int colNb, void *value)
     }
 }
 
-void display_column_names(CDATAFRAME *cdf)
-{
+void display_column_names(CDATAFRAME *cdf){
     LNODE *node = cdf->head;
     while (node != NULL)
     {
@@ -553,18 +552,18 @@ void display_column_names(CDATAFRAME *cdf)
 
 void display_number_rows(CDATAFRAME* cdf) {
     LNODE* node = cdf->head;
-    int count = 0;
-    while (node != NULL) {
-        count++;
-        node = node->next;
-    }
+    COLUMN* column = node->data;
+    int count = column->size;
     printf("There are %d rows in this CDataframe\n", count);
 }
 
 void display_number_col(CDATAFRAME* cdf) {
     LNODE* node = cdf->head;
-    COLUMN* column = node->data;
-    int count = column->size;
+    int count = 0;
+    while (node != NULL) {
+        count++;
+        node = node->next;
+    }
     printf("There are %d columns in this CDataframe\n", count);
 }
 
@@ -621,57 +620,6 @@ void display_number_cells_greater(CDATAFRAME* cdf, void* x, ENUM_TYPE type) {
     }
     printf("There are %d cells greater than the value given\n", count);
 }
-    printf("|\n");
-}
-
-// function to create a cdframe randomly
-void create_cdataframe_randomly(CDATAFRAME *cdf, int nb_rows, int nb_cols)
-{
-    LNODE *node = cdf->head;
-    for (int i = 0; i < nb_cols && node != NULL; i++)
-    {
-        COLUMN *col = node->data;
-        for (int j = 0; j < nb_rows; j++)
-        {
-            void *value = (void *)malloc(sizeof(col->column_type));
-            switch (col->column_type)
-            {
-            case UINT:
-                *(unsigned int *)value = rand() % 100;
-                break;
-            case INT:
-                *(int *)value = rand() % 10000000;
-                break;
-            case CHAR:
-                *(char *)value = 'a' + rand() % 26;
-                break;
-            case FLOAT:
-                *(float *)value = (float)(rand() % 100) / 10;
-                break;
-            case DOUBLE:
-                *(double *)value = (double)(rand() % 100) / 10;
-                break;
-            case STRING:
-                break;
-            case STRUCTURE:
-                break;
-            default:
-                value = NULL;
-                break;
-            }
-            insert_value(col, value);
-        }
-        node = node->next;
-    }
-}
-
-/**
-* @brief: Create a CDataframe from csvfile 
-* @param: CSV filename 
-* @param: Array of types 
-* @param: Size of array in param2
-the first line of the CSV file must contain the column names (will be used as the title of the columns in the CDATAFRAME)
-*/
 
 CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     // Open the CSV file
@@ -741,12 +689,6 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     return cdf;
 }
 
-/**
-* @brief: Export into a csvfile 
-* @param1: Pointer to the CDataframe 
-* @param2: csv filename where export file, if the file exists, 
-* it will be overwritten 
-*/
 void save_into_csv(CDATAFRAME *cdf, char *file_name) {
     // Open the CSV file
     FILE *file = fopen(file_name, "w");
@@ -809,11 +751,3 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
     }
     fclose(file);
 }
-
-
-
-
-
-
-
-
