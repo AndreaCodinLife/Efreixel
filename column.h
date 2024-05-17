@@ -39,12 +39,19 @@ struct column
     unsigned int size;     // logical size
     unsigned int max_size; // physical size
     ENUM_TYPE column_type;
-    COL_TYPE **data; // array of pointers to stored data 
+    COL_TYPE **data;               // array of pointers to stored data
     unsigned long long int *index; // array of integers
-
+    // index valid
+    // 0 : no index
+    // -1 : invalid index
+    // 1 : valid index
+    int valid_index;
+    // direction de tri Ascendant ou Déscendant
+    // 0 : ASC
+    // 1 : DESC
+    int sort_dir;
 };
 typedef struct column COLUMN;
-
 
 //* Function prototypes
 
@@ -58,7 +65,7 @@ COLUMN *create_column(ENUM_TYPE type, char *title);
 
 /**
  * @brief Insert a value into a column
- * @param col A pointer to the column 
+ * @param col A pointer to the column
  * @param value A pointer to the value to be inserted
  * @return 1 if the value is correctly inserted, 0 otherwise
  */
@@ -124,4 +131,4 @@ int count_less(COLUMN *col, void *value);
  */
 int count_equal(COLUMN *col, void *value);
 
-#endif 
+#endif

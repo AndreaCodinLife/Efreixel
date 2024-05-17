@@ -18,6 +18,8 @@ COLUMN *create_column(ENUM_TYPE type, char *title)
     column->size = 0;
     column->max_size = 0;
     column->index = NULL;
+    column->valid_index = 0;
+    column->sort_dir = 0;
     return column;
 }
 
