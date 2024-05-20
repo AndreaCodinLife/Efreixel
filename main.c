@@ -41,16 +41,18 @@ int main()
         }
     }*/
     /*ENUM_TYPE* cdftype = {INT};*/
-    COLUMN* col = create_column(INT, "test");
-    int a = 1, b = 2, c = 3, d = 4; 
-    void* val = &a;
+    COLUMN* col = create_column(CHAR, "test");
+    char a = "a", b = "b", c = "c", d = "d", e = "e"; 
+    void* val1 = &e;
+    void* val2 = &a;
     insert_value(col, &a);
     insert_value(col, &b);
     insert_value(col, &c);
     insert_value(col, &d);
     print_col(col);
     print_col_by_index(col);
-    printf("%d", search_value_in_column(col, val));
+    printf("%d\n", search_value_in_column(col, val1));
+    printf("%d\n", search_value_in_column(col, val2));
     /*CDATAFRAME* cdf = load_from_csv("export.csv", cdftype, 3);
     display_cdataframe_like_excel(cdf);*/
     //add_row(cdf);
