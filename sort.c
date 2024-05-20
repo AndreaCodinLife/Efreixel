@@ -248,7 +248,7 @@ int check_index(COLUMN *col) {
 }
 
 int search_value_in_column(COLUMN *col, void* val) {
-    //if(check_index == 1) {
+    if(check_index == 1) {
         unsigned long long int* tab = col->index;
         int index1 = 0, index2 = col->size;
         while (index1 < index2) {
@@ -328,7 +328,8 @@ int search_value_in_column(COLUMN *col, void* val) {
             }
         }
         return 0;
-    //}
+    }
+    return -1;
 }
 
 void update_index(COLUMN *col)
