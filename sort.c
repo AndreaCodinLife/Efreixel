@@ -245,3 +245,8 @@ void print_col_by_index(COLUMN *col)
         }
     }
 }
+
+void update_index(COLUMN *col)
+{
+    sort(col, col->sort_dir);
+}
