@@ -24,18 +24,19 @@ int main()
     printf("3. import a dataframe from a csv file\n");
     printf("4. export a dataframe to a csv file\n");
     printf("5. display a dataframe\n");
-    printf("6. add a row\n");
-    printf("7. add a column\n");
-    printf("8. remove a row\n");
-    printf("9. remove a column\n");
-    printf("10. sort a column\n");
-    printf("11. display a column with index\n");
+    printf("6. display a dataframe like excel (in developement, if any problem with this function, switch to the other one)\n");
+    printf("7. add a row\n");
+    printf("8. add a column\n");
+    printf("9. remove a row\n");
+    printf("10. remove a column\n");
+    printf("11. sort a column\n");
+    printf("12. display a column with index\n");
     while (running) {
         
         do {
             printf("your choice : ");
             scanf("%d", &choice);
-        } while (choice < 0 || choice > 11);
+        } while (choice < 0 || choice > 14);
         switch (choice) {
             case 0:
                 running = 0;
@@ -52,38 +53,41 @@ int main()
             case 4:
                 save_into_csv(cdf, "export.csv");
             case 5:
-                display_cdataframe_like_excel(cdf);
+                display_cdataframe(cdf);
                 break;
             case 6:
-                add_row(cdf);
+                display_cdataframe_like_excel(cdf);
                 break;
             case 7:
+                add_row(cdf);
+                break;
+            case 8:
                 printf("Enter the name of the column to create: ");
                 scanf("%s", col_name);
                 printf("test");
                 create_col(cdf, col_name, INT, 0);
                 break;
-            case 8:
-                printf("Enter the index of the row to remove :");
+            case 9:
+                printf("Enter the index of the row to remove: ");
                 scanf("%d", &index);
                 delete_row(cdf, index);
                 break;
-            case 9:
+            case 10:
                 printf("%d", get_cdataframe_cols_size(cdf));
                 printf("Enter the name of the column to remove: ");
                 scanf("%s", col_name);
                 delete_column(cdf, col_name);
                 printf("%d", get_cdataframe_cols_size(cdf));
                 break;
-            case 10:
-                printf("Enter the index of the column to sort");
+            case 11:
+                printf("Enter the index of the column to sort: ");
                 scanf("%d", &col_index);
-                printf("Enter the type of sort : ASC for ascending, DESC for descending");
+                printf("Enter the type of sort : ASC for ascending, DESC for descending: ");
                 scanf("%s ", sort_type);
                 sort_cdataframe(cdf, col_index, sort_type);
                 break;
-            case 11:
-                printf("Enter the index of the column to sort");
+            case 12:
+                printf("Enter the index of the column to sort: ");
                 scanf("%s ", col_name);
                 LNODE* node = cdf->head;
                 int out = 0;
@@ -94,7 +98,6 @@ int main()
                         out = 1;
                     }
                 }
-                
                 break;
             default:
                 break;

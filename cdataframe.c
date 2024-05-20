@@ -464,7 +464,6 @@ void delete_row(CDATAFRAME* cdf, int index) {
             {
                 col->data[i] = col->data[i + 1];
             }
-            free(col->data[i]);
             col->data[i] = NULL;
             col->size--;
         }
@@ -509,6 +508,7 @@ void rename_col(CDATAFRAME *cdf, int index, char *newName)
     {
         COLUMN *col = node->data;
         col->title = newName;
+        display_column_names(cdf);
     }
 }
 
@@ -560,7 +560,7 @@ void display_column_names(CDATAFRAME *cdf){
         printf("|%s", ((COLUMN *)node->data)->title);
         node = node->next;
     }
-    printf("/n");
+    printf("\n");
 }
 
 void display_number_rows(CDATAFRAME* cdf) {
