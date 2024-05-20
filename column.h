@@ -131,4 +131,11 @@ int count_less(COLUMN *col, void *value);
  */
 int count_equal(COLUMN *col, void *value);
 
+/**
+ * @brief: Remove the index of a column
+ * @param1: Pointer to the column
+ */
+void erase_index(COLUMN *col);
+
+
 #endif

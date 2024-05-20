@@ -276,3 +276,7 @@ int search_value_in_column(COLUMN *col, void *val) {
 sort_cdataframe(CDATAFRAME *cdf, int col, char *order)
 {
 }
+void update_index(COLUMN *col)
+{
+    sort(col, col->sort_dir);
+}

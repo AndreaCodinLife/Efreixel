@@ -297,3 +297,10 @@ int count_equal(COLUMN *col, void *value)
     }
     return count;
 }
+
+void erase_index(COLUMN *col)
+{
+    free(col->index);
+    col->index = NULL;
+    col->valid_index = 0;
+}

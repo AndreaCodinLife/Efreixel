@@ -53,4 +53,10 @@ void print_col_by_index(COLUMN *col);
  */
 void reverse_array(void** data, int size);
 
+/**
+ * @brief: Update the index
+ * @param1: Pointer to the column
+ */
+void update_index(COLUMN *col);
+
 #endif // SORT_H
