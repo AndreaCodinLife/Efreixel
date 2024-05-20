@@ -751,3 +751,16 @@ void save_into_csv(CDATAFRAME *cdf, char *file_name) {
     }
     fclose(file);
 }
+
+COLUMN* get_column_by_index(CDATAFRAME* cdf, int index) {
+    LNODE* node = cdf->head;
+    int i = 0;
+    while (node != NULL && i < index) {
+        node = node->next;
+        i++;
+    }
+    if (node != NULL) {
+        return node->data;
+    }
+    return NULL;
+}

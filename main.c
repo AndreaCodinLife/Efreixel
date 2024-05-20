@@ -2,6 +2,7 @@
 #include "column.c"
 #include "list.c"
 #include "cdataframe.c"
+#include "sort.c"
 
 #define N 5
 
@@ -18,8 +19,8 @@ int main()
 
     CDATAFRAME* cdf = load_from_csv("export.csv", cdftype, 3);
     display_cdataframe_like_excel(cdf);
-    add_row(cdf);
-    display_cdataframe_like_excel(cdf);
+    //add_row(cdf);
+    //display_cdataframe_like_excel(cdf);
     display_number_rows(cdf);
     display_number_col(cdf);
 
@@ -28,6 +29,13 @@ int main()
     display_number_cells_equal(cdf, val, INT);
     display_number_cells_smaller(cdf, val, INT);
     display_number_cells_greater(cdf, val, INT);
+
+    //sort
+    sort_cdataframe(cdf, 0, "ASC");
+
+
+
+
 
     /*fill_cdataframe_with_inputs(cdf);
     display_cdataframe(cdf);
