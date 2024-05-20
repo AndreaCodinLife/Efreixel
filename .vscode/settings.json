@@ -3,6 +3,7 @@
         "__bit_reference": "c",
         "__split_buffer": "c",
         "vector": "c",
-        "string": "c"
+        "string": "c",
+        "column.h": "c"
     }
 }

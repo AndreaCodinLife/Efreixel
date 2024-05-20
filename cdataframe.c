@@ -28,9 +28,11 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size, char** col_names)
         else
         {
             printf("Enter the name of the column %d: ", i + 1);
-            scanf("%s", col_name);
+            scanf("%s ", col_name);
         }
+        printf("Enter the name of the columns\n");
         COLUMN *col = create_column(cdftype[i], col_name);
+        printf("Enter the name of the columns\n");
         if (col == NULL)
         {
             // Handle memory allocation failure
@@ -623,6 +625,8 @@ void display_number_cells_greater(CDATAFRAME* cdf, void* x, ENUM_TYPE type) {
 
 CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     // Open the CSV file
+    // Create the array of column names
+    char *col_names[size];
     FILE *file = fopen(file_name, "r");
     if (file == NULL) {
         return NULL;
@@ -631,8 +635,6 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     char line1[1024];
     fgets(line1, 1024, file);
     char *token1 = strtok(line1, ",");
-    // Create the array of column names
-    char *col_names[size];
     int i = 0;
     while (token1 != NULL) {
         col_names[i] = (char *)malloc(strlen(token1) * sizeof(char));
