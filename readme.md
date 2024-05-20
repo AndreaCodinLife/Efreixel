@@ -15,7 +15,7 @@ The project includes files for managing columns ([`column.c`] and [`column.h`]) 
 Here are some of the key files in the project:
 
 - [``cdataframe.c``] and [``cdataframe.h``]: These files contain the implementation and declaration of the `CDATAFRAME` struct and its associated functions.
-- [`column.c`] and [`column.h`] and [`[`column.h`]: These files contain the implementation and declaration of the `COLUMN` struct and its associated functions.
+- [`column.c`] and [`column.h`] and [`column.h`]: These files contain the implementation and declaration of the `COLUMN` struct and its associated functions.
 - [`[`list.c`]`] and [``list.h``]: These files contain the implementation and declaration of the `LIST` struct and its associated functions.
 - [``sort.c``] and [``sort.h``]: These files contain the implementation and declaration of various sorting algorithms used in the project.
 - [``main.c``]: This is the main entry point for the program.
@@ -25,11 +25,14 @@ Here are some of the key files in the project:
 The project provides various functions for creating and manipulating data frames, such as:
 
 - Adding and deleting rows and columns
-
+- Accessing and modifying data
 - Searching for values
 - Counting rows, columns, and cells
 - Sorting data frames
 - Storing the contents of a `CDATAFRAME` in a .csv file (`store_cdataframe_to_csv`)
+- Loading the contents of a .csv file into a `CDATAFRAME` (`load_cdataframe_from_csv`)
+- Displaying the contents of a `CDATAFRAME` (`display_cdataframe`)
+- And more...
 
 ## Future Developments
 
