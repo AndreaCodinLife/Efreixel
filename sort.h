@@ -1,6 +1,7 @@
 #ifndef SORT_H
 #define SORT_H
 #include "column.h"
+#include "cdataframe.h"
 
 
 #define ASC 0

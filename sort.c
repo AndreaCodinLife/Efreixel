@@ -63,7 +63,6 @@ void quicksort(COLUMN* col, int left, int right)
     }
 }
 
-
 int partition(COLUMN* col, int left, int right)
 {
     void* pivot = col->data[right];
@@ -195,7 +194,6 @@ void insertion_sort(COLUMN* col)
     }
 }
 
-
 void sort_cdataframe(CDATAFRAME* cdf, int col_index, char* sort_dir)
 {
     // you can use get_cols_by_index(cdf, col_index); 
@@ -213,7 +211,6 @@ void sort_cdataframe(CDATAFRAME* cdf, int col_index, char* sort_dir)
     }
     
 }
-
 
 void print_col_by_index(COLUMN *col)
 {
@@ -250,32 +247,90 @@ int check_index(COLUMN *col) {
     return col->valid_index;
 }
 
-int search_value_in_column(COLUMN *col, void *val) {
+int search_value_in_column(COLUMN *col, void* val) {
     //if(check_index == 1) {
         unsigned long long int* tab = col->index;
         int index1 = 0, index2 = col->size;
         while (index1 < index2) {
             int mid = (index1 + index2) / 2;
             void* val2 = col->data[tab[mid]];
-            if (val2 == val) {
-                return 1;
-            } else {
-                if (*(int*)val2 > *(int*)val) {
-                    index2 = mid;
+            switch (col->column_type)
+            {
+            case UINT:
+                if (*(int*)val2 == *(int*)val) {
+                    return 1;
                 } else {
-                    index1 = mid;
+                    if (*(int*)val2 > *(int*)val) {
+                        index2 = mid;
+                    } else {
+                        index1 = mid;
+                    }
                 }
+                break;
+            case INT:
+                if (*(int*)val2 == *(int*)val) {
+                    return 1;
+                } else {
+                    if (*(int*)val2 > *(int*)val) {
+                        index2 = mid;
+                    } else {
+                        index1 = mid+1;
+                    }
+                }
+                break;
+            case CHAR:
+                if (*(char*)val2 == *(char*)val) {
+                    return 1;
+                } else {
+                    if (*(char*)val2 > *(char*)val) {
+                        index2 = mid;
+                    } else {
+                        index1 = mid+1;
+                    }
+                }
+                break;
+            case FLOAT:
+                if (*(float*)val2 == *(float*)val) {
+                    return 1;
+                } else {
+                    if (*(float*)val2 > *(float*)val) {
+                        index2 = mid;
+                    } else {
+                        index1 = mid+1;
+                    }
+                }
+                break;
+            case DOUBLE:
+                if (*(double*)val2 == *(double*)val) {
+                    return 1;
+                } else {
+                    if (*(double*)val2 > *(double*)val) {
+                        index2 = mid;
+                    } else {
+                        index1 = mid+1;
+                    }
+                }
+                break;
+            case STRING:
+                if (*(char**)val2 == *(char**)val) {
+                    return 1;
+                } else {
+                    if (*(char**)val2 > *(char**)val) {
+                        index2 = mid;
+                    } else {
+                        index1 = mid+1;
+                    }
+                }
+                break;
+            default:
+                return -1;
+                break;
             }
-            return -1;
         }
         return 0;
     //}
 }
 
-
-sort_cdataframe(CDATAFRAME *cdf, int col, char *order)
-{
-}
 void update_index(COLUMN *col)
 {
     sort(col, col->sort_dir);
