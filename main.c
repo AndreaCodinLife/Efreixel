@@ -21,17 +21,17 @@ int main()
     display_cdataframe_like_excel(cdf);
     //add_row(cdf);
     //display_cdataframe_like_excel(cdf);
-    display_number_rows(cdf);
-    display_number_col(cdf);
+    //display_number_rows(cdf);
+    //display_number_col(cdf);
 
     int value = 1;
     void* val = &value;
-    display_number_cells_equal(cdf, val, INT);
-    display_number_cells_smaller(cdf, val, INT);
-    display_number_cells_greater(cdf, val, INT);
+    //display_number_cells_equal(cdf, val, INT);
+    //display_number_cells_smaller(cdf, val, INT);
+    //display_number_cells_greater(cdf, val, INT);
 
     //sort
-    sort_cdataframe(cdf, 0, "ASC");
+    sort_cdataframe(cdf, 0, "DESC");
 
 
 
@@ -63,7 +63,5 @@ int main()
         return -1;
     }
     printf("CDataframe deleted successfully\n");
-
-    /*ENUM_TYPE tab[10] = {1, "test"};*/
     return 0;
 }

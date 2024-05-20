@@ -5,25 +5,54 @@
 #include "sort.h"
 #include "list.h"
 #include "cdataframe.h"
+
+
 void sort(COLUMN* col, int sort_dir)
 {
     if (col->valid_index == 0)
     {
-        quicksort(col, 0, col->size - 1);
+        if (sort_dir == ASC)
+        {
+            quicksort(col, 0, col->size - 1);
+        }
+        else if (sort_dir == DESC)
+        {
+            // Reverse the array before sorting in descending order
+            reverse_array(col->data, col->size);
+            quicksort(col, 0, col->size - 1);
+            // Reverse the array again to restore the original order
+            reverse_array(col->data, col->size);
+        }
     }
     else if (col->valid_index == -1)
     {
-        insertion_sort(col);
+        if (sort_dir == ASC)
+        {
+            insertion_sort(col);
+        }
+        else if (sort_dir == DESC)
+        {
+            // Reverse the array before sorting in descending order
+            reverse_array(col->data, col->size);
+            insertion_sort(col);
+            // Reverse the array again to restore the original order
+            reverse_array(col->data, col->size);
+        }
     }
     col->sort_dir = sort_dir;
 }
 
-/*
- * @brief: Sort a column using the quicksort algorithm
- * @param1: Pointer to the column to sort
- * @param2: Left index of the column
- * @param3: Right index of the column
- */
+void reverse_array(void** data, int size)
+{
+    void* temp;
+    for (int i = 0; i < size / 2; i++)
+    {
+        temp = data[i];
+        data[i] = data[size - i - 1];
+        data[size - i - 1] = temp;
+    }
+}
+
 void quicksort(COLUMN* col, int left, int right)
 {
     if (left < right)
@@ -34,13 +63,7 @@ void quicksort(COLUMN* col, int left, int right)
     }
 }
 
-/*
- * @brief: Partition the column
- * @param1: Pointer to the column to partition
- * @param2: Left index of the column
- * @param3: Right index of the column
- * @return: The pivot index
- */
+
 int partition(COLUMN* col, int left, int right)
 {
     void* pivot = col->data[right];
@@ -114,10 +137,6 @@ int partition(COLUMN* col, int left, int right)
     return i + 1;
 }
 
-/*
- * @brief: Sort a column using the insertion sort algorithm
- * @param1: Pointer to the column to sort
- */
 void insertion_sort(COLUMN* col)
 {
     for (int i = 1; i < col->size; i++)
@@ -176,12 +195,7 @@ void insertion_sort(COLUMN* col)
     }
 }
 
-/*
- * @brief: Sort a CDataframe according to a given column
- * @param1: Pointer to the CDataframe to sort
- * @param2: Index of the column to sort
- * @param3: Sort type (ASC or DESC)
-*/
+
 void sort_cdataframe(CDATAFRAME* cdf, int col_index, char* sort_dir)
 {
     // you can use get_cols_by_index(cdf, col_index); 
@@ -200,10 +214,7 @@ void sort_cdataframe(CDATAFRAME* cdf, int col_index, char* sort_dir)
     
 }
 
-/**
- * @brief: Display the content of a sorted column
- * @param1: Pointer to a column
- */
+
 void print_col_by_index(COLUMN *col)
 {
     for (int i = 0; i < col->size; i++)
