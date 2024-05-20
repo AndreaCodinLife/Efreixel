@@ -157,4 +157,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size);
 */
 void save_into_csv(CDATAFRAME *cdf, char *file_name);
 
+
+COLUMN* get_column_by_index(CDATAFRAME* cdf, int index);
+
 #endif
