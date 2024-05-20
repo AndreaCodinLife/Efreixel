@@ -2,22 +2,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "list.h"
 
 COLUMN *create_column(ENUM_TYPE type, char *title)
 {
-    COLUMN *column = (COLUMN *)malloc(sizeof(COLUMN));
+    COLUMN *column = (COLUMN *)safe_malloc(sizeof(COLUMN));
+    if (column == NULL)
+    {
+        printf("Error allocating memory for column\n");
+        return NULL;
+    } else {
+        printf("Allocated memory for column\n");
+    }
     if (column == NULL)
     {
         return NULL;
     }
     column->column_type = type;
-    column->title = (char *)malloc(strlen(title) + 1);
+    column->title = (char *)safe_malloc(strlen(title) + 1);
+    if (column->title == NULL)
+    {
+        printf("Error allocating memory for column title\n");
+        free(column);
+        return NULL;
+    } else {
+        printf("Allocated memory for column title\n");
+    }
     strcpy(column->title, title);
     column->data = NULL;
     column->size = 0;
     column->max_size = 0;
-    column->index = (unsigned long long int*) malloc(sizeof(unsigned long long int*));
+    column->index = (unsigned long long int *)safe_malloc(sizeof(unsigned long long int));
+    if (column->index == NULL)
+    {
+        printf("Error allocating memory for column index\n");
+        free(column->title);
+        free(column);
+        return NULL;
+    } else {
+        printf("Allocated memory for column index\n");
+    }
     column->valid_index = 0;
     column->sort_dir = 0;
     return column;
@@ -39,37 +63,37 @@ int insert_value(COLUMN *col, void *value)
     switch (col->column_type)
     {
     case UINT:
-        col->data[col->size] = (void *)malloc(sizeof(unsigned int));
+        col->data[col->size] = (void *)safe_malloc(sizeof(unsigned int));
         // assign value to the address of the data
         col->data[col->size] = value;
         break;
     case INT:
-        col->data[col->size] = (void *)malloc(sizeof(int));
+        col->data[col->size] = (void *)safe_malloc(sizeof(int));
         // assign value to the address of the data
         col->data[col->size] = value;
         break;
     case CHAR:
-        col->data[col->size] = (void *)malloc(sizeof(char));
+        col->data[col->size] = (void *)safe_malloc(sizeof(char));
         col->data[col->size] = value;
         break;
     case FLOAT:
-        col->data[col->size] = (void *)malloc(sizeof(float));
+        col->data[col->size] = (void *)safe_malloc(sizeof(float));
         col->data[col->size] = value;
         break;
     case DOUBLE:
-        col->data[col->size] = (void *)malloc(sizeof(double));
+        col->data[col->size] = (void *)safe_malloc(sizeof(double));
         col->data[col->size] = value;
         break;
     case STRING:
-        col->data[col->size] = (void *)malloc(strlen((char *)value) + 1);
+        col->data[col->size] = (void *)safe_malloc(strlen((char *)value) + 1);
         strcpy((char *)col->data[col->size], (char *)value);
         break;
     case STRUCTURE:
-        col->data[col->size] = (void *)malloc(sizeof(void *));
+        col->data[col->size] = (void *)safe_malloc(sizeof(void *));
         col->data[col->size] = value;
         break;
     default:
-        col->data[col->size] = (void *)malloc(sizeof(void *));
+        col->data[col->size] = (void *)safe_malloc(sizeof(void *));
         col->data[col->size] = value;
         break;
     }
@@ -186,7 +210,7 @@ int count_occurrences(COLUMN *col, void *value)
         {
             count++;
         }
-        else 
+        else
         {
             count++;
         }

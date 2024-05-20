@@ -1,5 +1,4 @@
 #include "cdataframe.h"
-#include "cdataframe.h"
 #include "column.h"
 #include "list.h"
 #include <stdio.h>
@@ -9,10 +8,11 @@
 
 CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size, char** col_names)
 {
-    CDATAFRAME *cdf = (CDATAFRAME *)malloc(sizeof(CDATAFRAME));
+    CDATAFRAME *cdf = (CDATAFRAME *)safe_malloc(sizeof(CDATAFRAME));
     if (cdf == NULL)
     {
         // Handle memory allocation failure
+        printf("Memory allocation failed\n");
         return NULL;
     }
     cdf->head = NULL;
@@ -36,12 +36,14 @@ CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size, char** col_names)
         if (col == NULL)
         {
             // Handle memory allocation failure
+            printf("Memory allocation failed\n");
             return NULL;
         }
-        LNODE *lnode = (LNODE *)malloc(sizeof(LNODE));
+        LNODE *lnode = (LNODE *)safe_malloc(sizeof(LNODE));
         if (lnode == NULL)
         {
             // Handle memory allocation failure
+            printf("Memory allocation failed\n");
             return NULL;
         }
         lnode->data = col;
@@ -130,7 +132,7 @@ void fill_cdataframe(CDATAFRAME* cdf) {
         while (node != NULL) {// cdf->tail
             COLUMN* column = node->data;
             for (int i = 0; i < size; i++) {       
-                void* value = (void*) malloc(sizeof(column->column_type));
+                void* value = (void*) safe_malloc(sizeof(column->column_type));
                 
                 switch (column->column_type)
                     {
@@ -177,7 +179,7 @@ void fill_cdataframe_with_inputs(CDATAFRAME* cdf) {
             COLUMN *column = node->data;
             for (int i = 0; i < size; i++)
             {
-                void *value = (void *)malloc(sizeof(column->column_type));
+                void *value = (void *)safe_malloc(sizeof(column->column_type));
 
                 switch (column->column_type)
                 {
@@ -237,7 +239,7 @@ void display_cdataframe_like_excel(CDATAFRAME *cdf)
     int nb_rows = 0;
     int nb_cols = get_cdataframe_cols_size(cdf);
     // array of longest values in each column
-    int *longest_values = (int *)malloc(nb_cols * sizeof(int));
+    int *longest_values = (int *)safe_malloc(nb_cols * sizeof(int));
     // get the number of rows and the number of columns
     while (node != NULL)
     {
@@ -249,13 +251,13 @@ void display_cdataframe_like_excel(CDATAFRAME *cdf)
         node = node->next;
     }
     // create the matrix
-    char ***matrix = (char ***)malloc(nb_rows * sizeof(char **));
+    char ***matrix = (char ***)safe_malloc(nb_rows * sizeof(char **));
     for (int i = 0; i < nb_rows; i++)
     {
-        matrix[i] = (char **)malloc(nb_cols * sizeof(char *));
+        matrix[i] = (char **)safe_malloc(nb_cols * sizeof(char *));
         for (int j = 0; j < nb_cols; j++)
         {
-            matrix[i][j] = (char *)malloc(100 * sizeof(char));
+            matrix[i][j] = (char *)safe_malloc(100 * sizeof(char));
             strcpy(matrix[i][j], "");
         }
     }
@@ -412,7 +414,7 @@ void add_row(CDATAFRAME* cdf) {
     LNODE* node = cdf->head;
     while (node != NULL) {
         COLUMN* column = node->data;
-        void* value = (void*) malloc(sizeof(column->column_type));
+        void* value = (void*) safe_malloc(sizeof(column->column_type));
         switch (column->column_type)
             {
             case UINT:
@@ -446,6 +448,7 @@ void add_row(CDATAFRAME* cdf) {
                 break;
         }
         insert_value(node->data, value);
+        free(value);
         node = node->next;
     }
 }
@@ -470,7 +473,8 @@ void delete_row(CDATAFRAME* cdf, int index) {
 }
 
 LNODE *create_col(CDATAFRAME *cdf, char *title, ENUM_TYPE type, int index)
-{
+{   
+    printf("Memory start\n");
     LNODE *node = cdf->head;
     int pos = 0;
     while (pos < index && node != NULL)
@@ -479,7 +483,14 @@ LNODE *create_col(CDATAFRAME *cdf, char *title, ENUM_TYPE type, int index)
         pos++;
     }
     COLUMN *col = create_column(type, title);
-    LNODE *P = (LNODE *)malloc(sizeof(LNODE));
+    LNODE *P = (LNODE *)safe_malloc(sizeof(LNODE));
+    if (P == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return NULL;
+    } else {
+        printf("Memory allocation success\n");
+        }
     P->data = col;
     P->next = node->next;
     node->next = P;
@@ -637,7 +648,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
     char *token1 = strtok(line1, ",");
     int i = 0;
     while (token1 != NULL) {
-        col_names[i] = (char *)malloc(strlen(token1) * sizeof(char));
+        col_names[i] = (char *)safe_malloc(strlen(token1) * sizeof(char));
         strcpy(col_names[i], token1);
         token1 = strtok(NULL, ",");
         i++;
@@ -655,7 +666,7 @@ CDATAFRAME* load_from_csv(char *file_name, ENUM_TYPE *dftype, int size) {
         LNODE *node = cdf->head;
         while (token != NULL && node != NULL) {
             COLUMN *col = node->data;
-            void *value = (void *)malloc(sizeof(col->column_type));
+            void *value = (void *)safe_malloc(sizeof(col->column_type));
             switch (col->column_type) {
                 case UINT:
                     sscanf(token, "%u", (unsigned int *)value);

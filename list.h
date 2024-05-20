@@ -96,4 +96,6 @@ void *get_previous_elem(LIST * lst, LNODE * lnode);
  * @param2: Column name
  */
 void delete_column(CDATAFRAME *cdf, char *col_name);
+
+void* safe_malloc(size_t size);
 #endif

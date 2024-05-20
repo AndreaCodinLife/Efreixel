@@ -4,6 +4,7 @@
         "__split_buffer": "c",
         "vector": "c",
         "string": "c",
-        "column.h": "c"
+        "column.h": "c",
+        "list.h": "c"
     }
 }

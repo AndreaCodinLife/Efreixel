@@ -3,8 +3,22 @@
 #include <string.h>
 #include "list.h"
 
+//safe malloc function
+void *safe_malloc(size_t size)
+{
+    void *ptr = malloc(size);
+    if (ptr == NULL)
+    {
+        printf("Memory allocation failed\n");
+        exit(1);
+    } else {
+        printf("Memory allocation success\n");
+    }
+    return ptr;
+}
+
 LNODE *lst_create_lnode(void *dat) {
-    LNODE *ptmp = (LNODE *) malloc(sizeof(LNODE));
+    LNODE *ptmp = (LNODE *) safe_malloc(sizeof(LNODE));
     ptmp->data = dat;
     ptmp->next = NULL;
     ptmp->prev = NULL;
@@ -12,7 +26,7 @@ LNODE *lst_create_lnode(void *dat) {
 }
 
 LIST *lst_create_list() {
-    LIST *lst = (LIST *) malloc(sizeof(LIST));
+    LIST *lst = (LIST *) safe_malloc(sizeof(LIST));
     lst->head = NULL;
     lst->tail = NULL;
     return lst;
