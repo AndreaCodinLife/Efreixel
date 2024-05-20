@@ -110,21 +110,5 @@ int main()
                 break;
         }
     }
-    /*char* col_names[] = {"test1", "test2", "test3"};
-    ENUM_TYPE cdftype[] = {INT, CHAR, INT};
-    CDATAFRAME* cdf = create_cdataframe(cdftype, 3, col_names);
-    fill_cdataframe(cdf);
-    display_cdataframe_like_excel(cdf);
-    //sort_cdataframe(cdf, 0, "DESC");
-    LNODE* node = cdf->head;*/
-    /*COLUMN* col = create_column(INT, "test1");
-    int a = 1, b = 2, c = 3;
-    insert_value(col, &a);
-    print_col(col);
-    insert_value(col, &b);
-    print_col(col);
-    insert_value(col, &c);
-    print_col(col);*/
-    //print_col_by_index(col);
     return 0;
 }
