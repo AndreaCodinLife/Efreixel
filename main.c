@@ -8,7 +8,7 @@
 
 int main()
 {
-    /*char* col_names[] = {"test1", "test2", "test3"};
+    char* col_names[] = {"test1", "test2", "test3"};
     ENUM_TYPE cdftype[] = {INT, CHAR, INT};
     CDATAFRAME* cdf = create_cdataframe(cdftype, 3, col_names);
 
@@ -17,20 +17,21 @@ int main()
     int index;
     int col_index;
     int sort_type;
+    printf("Enter the command you want to use :\n");
+    printf("0. quit\n");
+    printf("1. fill the dataframe with inputs\n");
+    printf("2. fill the cdataframe with random values\n");
+    printf("3. import a dataframe from a csv file\n");
+    printf("4. export a dataframe to a csv file\n");
+    printf("5. display a dataframe\n");
+    printf("6. add a row\n");
+    printf("7. add a column\n");
+    printf("8. remove a row\n");
+    printf("9. remove a column\n");
+    printf("10. sort a column\n");
+    printf("11. display a column with index\n");
     while (running) {
-        printf("Enter the command you want to use :\n");
-        printf("0. quit\n");
-        printf("1. fill the dataframe with inputs\n");
-        printf("2. fill the cdataframe with random values\n");
-        printf("3. import a dataframe from a csv file\n");
-        printf("4. export a dataframe to a csv file\n");
-        printf("5. display a dataframe\n");
-        printf("6. add a row\n");
-        printf("7. add a column\n");
-        printf("8. remove a row\n");
-        printf("9. remove a column\n");
-        printf("10. sort a column\n");
-        printf("11. display a column with index");
+        
         do {
             printf("your choice : ");
             scanf("%d", &choice);
@@ -78,7 +79,7 @@ int main()
                 printf("Enter the index of the column to sort");
                 scanf("%d", &col_index);
                 printf("Enter the type of sort : ASC for ascending, DESC for descending");
-                scanf("%s ", &sort_type);
+                scanf("%s ", sort_type);
                 sort_cdataframe(cdf, col_index, sort_type);
                 break;
             case 11:
@@ -98,7 +99,7 @@ int main()
             default:
                 break;
         }
-    }*/
+    }
     /*char* col_names[] = {"test1", "test2", "test3"};
     ENUM_TYPE cdftype[] = {INT, CHAR, INT};
     CDATAFRAME* cdf = create_cdataframe(cdftype, 3, col_names);
@@ -106,14 +107,14 @@ int main()
     display_cdataframe_like_excel(cdf);
     //sort_cdataframe(cdf, 0, "DESC");
     LNODE* node = cdf->head;*/
-    COLUMN* col = create_column(INT, "test1");
+    /*COLUMN* col = create_column(INT, "test1");
     int a = 1, b = 2, c = 3;
     insert_value(col, &a);
     print_col(col);
     insert_value(col, &b);
     print_col(col);
     insert_value(col, &c);
-    print_col(col);
+    print_col(col);*/
     //print_col_by_index(col);
     return 0;
 }

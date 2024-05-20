@@ -32,7 +32,7 @@ COLUMN *create_column(ENUM_TYPE type, char *title)
     column->data = NULL;
     column->size = 0;
     column->max_size = 0;
-    column->index = (unsigned long long int *)safe_malloc(sizeof(unsigned long long int));
+    column->index = (unsigned long long int *)malloc(sizeof(unsigned long long int)*10);
     if (column->index == NULL)
     {
         printf("Error allocating memory for column index\n");
@@ -59,45 +59,58 @@ int insert_value(COLUMN *col, void *value)
         }
         col->max_size++;
     }
+    if (col->valid_index == col->max_size)
+    {
+        col->index = realloc(col->index, (col->max_size + 1) * sizeof(unsigned long long int));
+        if (col->index == NULL)
+        {
+            //if realloc failed
+            printf("realloc failed\n");
+            return -1;
+        }
+        col->max_size++;
+    }
+    col->index[col->valid_index] = col->valid_index;
+    col->valid_index++;
+
 
     switch (col->column_type)
     {
     case UINT:
-        col->data[col->size] = (void *)safe_malloc(sizeof(unsigned int));
+        col->data[col->size] = (void *)malloc(sizeof(unsigned int));
         // assign value to the address of the data
         col->data[col->size] = value;
         break;
     case INT:
-        col->data[col->size] = (void *)safe_malloc(sizeof(int));
+        col->data[col->size] = (void *)malloc(sizeof(int));
         // assign value to the address of the data
         col->data[col->size] = value;
         break;
     case CHAR:
-        col->data[col->size] = (void *)safe_malloc(sizeof(char));
+        col->data[col->size] = (void *)malloc(sizeof(char));
         col->data[col->size] = value;
         break;
     case FLOAT:
-        col->data[col->size] = (void *)safe_malloc(sizeof(float));
+        col->data[col->size] = (void *)malloc(sizeof(float));
         col->data[col->size] = value;
         break;
     case DOUBLE:
-        col->data[col->size] = (void *)safe_malloc(sizeof(double));
+        col->data[col->size] = (void *)malloc(sizeof(double));
         col->data[col->size] = value;
         break;
     case STRING:
-        col->data[col->size] = (void *)safe_malloc(strlen((char *)value) + 1);
+        col->data[col->size] = (void *)malloc(strlen((char *)value) + 1);
         strcpy((char *)col->data[col->size], (char *)value);
         break;
     case STRUCTURE:
-        col->data[col->size] = (void *)safe_malloc(sizeof(void *));
+        col->data[col->size] = (void *)malloc(sizeof(void *));
         col->data[col->size] = value;
         break;
     default:
-        col->data[col->size] = (void *)safe_malloc(sizeof(void *));
+        col->data[col->size] = (void *)malloc(sizeof(void *));
         col->data[col->size] = value;
         break;
     }
-    col->index[col->size] = col->size;
     col->size++;
     return 0;
 }
