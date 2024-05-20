@@ -503,12 +503,14 @@ void rename_col(CDATAFRAME *cdf, int index, char *newName)
     while (pos < index && node != NULL)
     {
         node = node->next;
+        pos++;
     }
     if (node != NULL)
     {
         COLUMN *col = node->data;
-        col->title = newName;
-        display_column_names(cdf);
+        free(col->title);
+        col->title = (char *)safe_malloc(strlen(newName) + 1);
+        strcpy(col->title, newName);
     }
 }
 

@@ -12,7 +12,7 @@ void *safe_malloc(size_t size)
         printf("Memory allocation failed\n");
         exit(1);
     } else {
-        printf("Memory allocation success\n");
+        //printf("Memory allocation success\n");
     }
     return ptr;
 }
