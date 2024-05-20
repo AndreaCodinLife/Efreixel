@@ -42,7 +42,7 @@ int main()
     }*/
     /*ENUM_TYPE* cdftype = {INT};*/
     COLUMN* col = create_column(CHAR, "test");
-    char a = "a", b = "b", c = "c", d = "d", e = "e"; 
+    char a[] = "a", b[] = "b", c[] = "c", d[] = "d", e[] = "e"; 
     void* val1 = &e;
     void* val2 = &a;
     insert_value(col, &a);
@@ -53,7 +53,8 @@ int main()
     print_col_by_index(col);
     printf("%d\n", search_value_in_column(col, val1));
     printf("%d\n", search_value_in_column(col, val2));
-    /*CDATAFRAME* cdf = load_from_csv("export.csv", cdftype, 3);
+    /*
+    CDATAFRAME* cdf = load_from_csv("export.csv", cdftype, 3);
     display_cdataframe_like_excel(cdf);*/
     //add_row(cdf);
     //display_cdataframe_like_excel(cdf);
@@ -73,7 +74,7 @@ int main()
 
 
 
-    /*fill_cdataframe_with_inputs(cdf);
+    fill_cdataframe_with_inputs(cdf);
     display_cdataframe(cdf);
     //delete_row(cdf, 1);
     //display_cdataframe(cdf);
@@ -90,9 +91,9 @@ int main()
     replace_value(cdf, 2, 1, val);
     display_cdataframe(cdf);
 
-    display_column_names(cdf);*/
+    display_column_names(cdf);
 
-    /*delete_cdataframe(&cdf);
+    delete_cdataframe(&cdf);
     if (cdf != NULL)
     {
         printf("Error deleting CDataframe\n");

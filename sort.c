@@ -18,10 +18,10 @@ void sort(COLUMN* col, int sort_dir)
         else if (sort_dir == DESC)
         {
             // Reverse the array before sorting in descending order
-            reverse_array(col->data, col->size);
+            reverse_array((void **)col->data, col->size);
             quicksort(col, 0, col->size - 1);
             // Reverse the array again to restore the original order
-            reverse_array(col->data, col->size);
+            reverse_array((void **)col->data, col->size);
         }
     }
     else if (col->valid_index == -1)
@@ -33,10 +33,10 @@ void sort(COLUMN* col, int sort_dir)
         else if (sort_dir == DESC)
         {
             // Reverse the array before sorting in descending order
-            reverse_array(col->data, col->size);
+            reverse_array((void **)col->data, col->size);
             insertion_sort(col);
             // Reverse the array again to restore the original order
-            reverse_array(col->data, col->size);
+            reverse_array((void **)col->data, col->size);
         }
     }
     col->sort_dir = sort_dir;
@@ -219,22 +219,22 @@ void print_col_by_index(COLUMN *col)
         tab = col->index;
         switch (col->column_type) {
         case UINT:
-            printf("%d\n", *(col->data[tab[i]]));
+            printf("%d\n", col->data[tab[i]]->uint_value);
             break;
         case INT:
-            printf("%d\n", *(col->data[tab[i]]));
+            printf("%d\n", col->data[tab[i]]->int_value);
             break;
         case CHAR:
-            printf("%c\n", *(col->data[tab[i]]));
+            printf("%c\n", col->data[tab[i]]->char_value);
             break;
         case FLOAT:
-            printf("%f\n", *(col->data[tab[i]]));
+            printf("%f\n", col->data[tab[i]]->float_value);
             break;
         case DOUBLE:
-            printf("%lf\n", *(col->data[tab[i]]));
+            printf("%lf\n", col->data[tab[i]]->double_value);
             break;
         case STRING:
-            printf("%s\n", *(col->data[tab[i]]));
+            printf("%s\n", col->data[tab[i]]->string_value);
             break;
         default:
             printf("Error");
@@ -248,7 +248,7 @@ int check_index(COLUMN *col) {
 }
 
 int search_value_in_column(COLUMN *col, void* val) {
-    if(check_index == 1) {
+    if(check_index(col) == 1) {
         unsigned long long int* tab = col->index;
         int index1 = 0, index2 = col->size;
         while (index1 < index2) {

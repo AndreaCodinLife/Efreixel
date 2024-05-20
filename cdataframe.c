@@ -574,7 +574,7 @@ void display_number_cells_equal(CDATAFRAME* cdf, void* x, ENUM_TYPE type) {
         COLUMN* column = node->data;
         if (column->column_type == type) {
             for(int i = 0; i < column->size; i++) {
-                int* pt = column->data[i];
+                int* pt = &(column->data[i]->int_value);
                 if (*pt == *(int*)x) {
                     count++;
                 }
@@ -592,7 +592,7 @@ void display_number_cells_smaller(CDATAFRAME* cdf, void* x, ENUM_TYPE type) {
         COLUMN* column = node->data;
         if (column->column_type == type) {
             for(int i = 0; i < column->size; i++) {
-                int* pt = column->data[i];
+                int* pt = &(column->data[i]->int_value);
                 if (*pt < *(int*)x) {
                     count++;
                 }
@@ -610,7 +610,7 @@ void display_number_cells_greater(CDATAFRAME* cdf, void* x, ENUM_TYPE type) {
         COLUMN* column = node->data;
         if (column->column_type == type) {
             for(int i = 0; i < column->size; i++) {
-                int* pt = column->data[i];
+                int* pt = &(column->data[i]->int_value);
                 if (*pt > *(int*)x) {
                     count++;
                 }
