@@ -40,7 +40,7 @@ int main()
                 break;
         }
     }*/
-    ENUM_TYPE* cdftype = {INT};
+    /*ENUM_TYPE* cdftype = {INT};*/
     COLUMN* col = create_column(INT, "test");
     int a = 1, b = 2, c = 3, d = 4; 
     void* val = &a;
@@ -51,14 +51,14 @@ int main()
     print_col(col);
     print_col_by_index(col);
     printf("%d", search_value_in_column(col, val));
-    CDATAFRAME* cdf = load_from_csv("export.csv", cdftype, 3);
-    display_cdataframe_like_excel(cdf);
+    /*CDATAFRAME* cdf = load_from_csv("export.csv", cdftype, 3);
+    display_cdataframe_like_excel(cdf);*/
     //add_row(cdf);
     //display_cdataframe_like_excel(cdf);
     //display_number_rows(cdf);
     //display_number_col(cdf);
 
-    int value = 1;
+    /*int value = 1;
     void* val = &value;
     //display_number_cells_equal(cdf, val, INT);
     //display_number_cells_smaller(cdf, val, INT);
@@ -90,12 +90,12 @@ int main()
 
     display_column_names(cdf);*/
 
-    delete_cdataframe(&cdf);
+    /*delete_cdataframe(&cdf);
     if (cdf != NULL)
     {
         printf("Error deleting CDataframe\n");
         return -1;
     }
-    printf("CDataframe deleted successfully\n");
+    printf("CDataframe deleted successfully\n");*/
     return 0;
 }

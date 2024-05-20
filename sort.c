@@ -250,6 +250,27 @@ int check_index(COLUMN *col) {
     return col->valid_index;
 }
 
+int search_value_in_column(COLUMN *col, void *val) {
+    //if(check_index == 1) {
+        unsigned long long int* tab = col->index;
+        int index1 = 0, index2 = col->size;
+        while (index1 < index2) {
+            int mid = (index1 + index2) / 2;
+            void* val2 = col->data[tab[mid]];
+            if (val2 == val) {
+                return 1;
+            } else {
+                if (*(int*)val2 > *(int*)val) {
+                    index2 = mid;
+                } else {
+                    index1 = mid;
+                }
+            }
+            return -1;
+        }
+        return 0;
+    //}
+}
 
 
 sort_cdataframe(CDATAFRAME *cdf, int col, char *order)
