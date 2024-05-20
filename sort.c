@@ -95,13 +95,40 @@ int partition(int *index, void **data, int low, int high, int sort_dir)
 
 void print_col_by_index(COLUMN *col)
 {
-    for (int i = 0; i < col->size; i++)
-    {
-        char str[100];
-        convert_value(col, i, str, 100);
-        printf("%s\n", str);
+    unsigned long long int* tab;
+    for (int i = 0; i < col->size; i++) {
+        tab = col->index;
+        switch (col->column_type) {
+        case UINT:
+            printf("%d\n", *(col->data[tab[i]]));
+            break;
+        case INT:
+            printf("%d\n", *(col->data[tab[i]]));
+            break;
+        case CHAR:
+            printf("%c\n", *(col->data[tab[i]]));
+            break;
+        case FLOAT:
+            printf("%f\n", *(col->data[tab[i]]));
+            break;
+        case DOUBLE:
+            printf("%lf\n", *(col->data[tab[i]]));
+            break;
+        case STRING:
+            printf("%s\n", *(col->data[tab[i]]));
+            break;
+        default:
+            printf("Error");
+            break;
+        }
     }
 }
+
+int check_index(COLUMN *col) {
+    return col->valid_index;
+}
+
+
 
 sort_cdataframe(CDATAFRAME *cdf, int col, char *order)
 {

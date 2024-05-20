@@ -17,7 +17,7 @@ COLUMN *create_column(ENUM_TYPE type, char *title)
     column->data = NULL;
     column->size = 0;
     column->max_size = 0;
-    column->index = NULL;
+    column->index = (unsigned long long int*) malloc(sizeof(unsigned long long int*));
     column->valid_index = 0;
     column->sort_dir = 0;
     return column;
@@ -73,6 +73,7 @@ int insert_value(COLUMN *col, void *value)
         col->data[col->size] = value;
         break;
     }
+    col->index[col->size] = col->size;
     col->size++;
     return 0;
 }
