@@ -31,6 +31,7 @@ int main()
     printf("10. remove a column\n");
     printf("11. sort a column\n");
     printf("12. display a column with index\n");
+    printf("13. rename a column\n");
     while (running) {
         
         do {
@@ -49,7 +50,7 @@ int main()
                 break;
             case 3:
                 cdf = load_from_csv("export.csv", cdftype, 3);
-                //display_cdataframe_like_excel(cdf);
+                display_cdataframe_like_excel(cdf);
             case 4:
                 save_into_csv(cdf, "export.csv");
             case 5:
@@ -64,7 +65,6 @@ int main()
             case 8:
                 printf("Enter the name of the column to create: ");
                 scanf("%s", col_name);
-                printf("test");
                 create_col(cdf, col_name, INT, 0);
                 break;
             case 9:
@@ -98,6 +98,13 @@ int main()
                         out = 1;
                     }
                 }
+                break;
+            case 13:
+                printf("Enter the index of the column to rename: ");
+                scanf("%d", &col_index);
+                printf("Enter the new name of the column: ");
+                scanf("%s", col_name);
+                rename_col(cdf, col_index, col_name);
                 break;
             default:
                 break;
