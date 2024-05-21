@@ -16,7 +16,7 @@ Here are some of the key files in the project:
 
 - [``cdataframe.c``] and [``cdataframe.h``]: These files contain the implementation and declaration of the `CDATAFRAME` struct and its associated functions.
 - [`column.c`] and [`column.h`] and [`column.h`]: These files contain the implementation and declaration of the `COLUMN` struct and its associated functions.
-- [`[`list.c`]`] and [``list.h``]: These files contain the implementation and declaration of the `LIST` struct and its associated functions.
+- [``list.c``] and [``list.h``]: These files contain the implementation and declaration of the `LIST` struct and its associated functions.
 - [``sort.c``] and [``sort.h``]: These files contain the implementation and declaration of various sorting algorithms used in the project.
 - [``main.c``]: This is the main entry point for the program.
 
